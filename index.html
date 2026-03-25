@@ -43,7 +43,7 @@
   }
 
   h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Libre Baskerville', serif;
     font-weight: 900;
     font-size: clamp(28px, 7vw, 48px);
     text-align: center;
@@ -88,9 +88,7 @@
     pointer-events: none;
   }
 
-  .mood-card:hover {
-    transform: scale(1.06);
-  }
+  .mood-card:hover { transform: scale(1.06); }
 
   .mood-card.selected {
     transform: scale(1.08);
@@ -108,23 +106,6 @@
     object-fit: cover;
     border-radius: 16px;
     pointer-events: none;
-  }
-
-  .mood-label {
-    position: absolute;
-    bottom: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 12px;
-    font-weight: 500;
-    color: #888;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .mood-card.selected .mood-label {
-    opacity: 1;
   }
 
   .check-badge {
@@ -162,7 +143,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -194,52 +175,125 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .phone-input::placeholder {
-    color: #bbb;
-  }
+  .phone-input::placeholder { color: #bbb; }
 
   .phone-input:focus {
     border-color: var(--selected-ring);
     box-shadow: 0 0 0 4px rgba(196, 149, 106, 0.15);
   }
 
-  .send-btn {
-    padding: 14px 28px;
+  .btn {
+    padding: 14px 24px;
     border: none;
     border-radius: 14px;
-    background: var(--text);
-    color: #fff;
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.2s ease, opacity 0.3s ease;
     white-space: nowrap;
     -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .send-btn:hover {
-    transform: scale(1.03);
+  .btn:hover { transform: scale(1.03); }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .btn-primary {
+    background: var(--text);
+    color: #fff;
   }
 
-  .send-btn:active {
-    transform: scale(0.97);
+  .btn-secondary {
+    background: var(--selected-ring);
+    color: #fff;
   }
 
-  .send-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
+  .btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    flex-shrink: 0;
   }
 
-  .hint {
-    text-align: center;
+  .actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .actions .btn { flex: 1; justify-content: center; }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.5);
+    font-size: 14px;
+    color: #666;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .step.done {
+    background: rgba(196, 149, 106, 0.12);
+    color: var(--text);
+  }
+
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 13px;
-    color: #aaa;
-    line-height: 1.4;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
-  /* Subtle floating animation on cards */
+  .step.done .step-num {
+    background: var(--selected-ring);
+    color: #fff;
+  }
+
+  .step.active {
+    background: rgba(255,255,255,0.8);
+    color: var(--text);
+  }
+
+  .step.active .step-num {
+    background: var(--text);
+    color: #fff;
+  }
+
+  .success-msg {
+    text-align: center;
+    font-size: 14px;
+    color: var(--selected-ring);
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .success-msg.show { opacity: 1; }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
@@ -248,7 +302,6 @@
   .mood-card:nth-child(1) { animation: float 4s ease-in-out infinite; }
   .mood-card:nth-child(2) { animation: float 4s ease-in-out 0.5s infinite; }
   .mood-card:nth-child(3) { animation: float 4s ease-in-out 1s infinite; }
-
   .mood-card.selected { animation: none; }
 
   @media (max-width: 480px) {
@@ -256,6 +309,7 @@
     .mood-card::after { border-radius: 16px; }
     .moods { gap: 12px; }
     .container { gap: 28px; }
+    .actions { flex-direction: column; }
   }
 </style>
 </head>
@@ -282,54 +336,101 @@
   <div class="send-section" id="sendSection">
     <div class="input-row">
       <input type="tel" class="phone-input" id="phoneInput" placeholder="Numéro de téléphone" inputmode="tel" autocomplete="tel">
-      <button class="send-btn" id="sendBtn" disabled onclick="sendMood()">Envoyer</button>
     </div>
-    <p class="hint">L'app SMS de ton téléphone s'ouvrira avec le mood sélectionné</p>
+
+    <div class="actions">
+      <button class="btn btn-secondary" id="downloadBtn" disabled onclick="downloadImage()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Sauvegarder l'image
+      </button>
+      <button class="btn btn-primary" id="smsBtn" disabled onclick="openSms()">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Ouvrir SMS
+      </button>
+    </div>
+
+    <div class="steps">
+      <div class="step active" id="step1">
+        <span class="step-num">1</span>
+        Sauvegarde l'image sur ton téléphone
+      </div>
+      <div class="step" id="step2">
+        <span class="step-num">2</span>
+        Ouvre le SMS et attache l'image
+      </div>
+      <div class="step" id="step3">
+        <span class="step-num">3</span>
+        Envoie le mood Tommaso !
+      </div>
+    </div>
+
+    <p class="success-msg" id="successMsg">Image sauvegardée ! Maintenant ouvre le SMS et attache-la</p>
   </div>
 </div>
 
 <script>
   let selectedMood = null;
-  const moodMessages = {
-    cozy: "Mode cocoon activé 🫣 Voici mon mood Tommaso du jour → cozy hibernation",
-    detective: "J'enquête sur toi 🔍 Voici mon mood Tommaso du jour → detective mode",
-    scheming: "Je prépare un mauvais coup 🤔 Voici mon mood Tommaso du jour → evil genius"
+
+  const moodImages = {
+    cozy: document.querySelector('[data-mood="cozy"] img').src,
+    detective: document.querySelector('[data-mood="detective"] img').src,
+    scheming: document.querySelector('[data-mood="scheming"] img').src,
   };
 
   function selectMood(card) {
-    // Remove previous selection
     document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     selectedMood = card.dataset.mood;
-
-    // Show send section
     document.getElementById('sendSection').classList.add('visible');
     document.getElementById('phoneInput').focus();
-    updateSendBtn();
+    updateBtns();
+    // Reset steps
+    document.getElementById('step1').className = 'step active';
+    document.getElementById('step2').className = 'step';
+    document.getElementById('step3').className = 'step';
+    document.getElementById('successMsg').classList.remove('show');
   }
 
   const phoneInput = document.getElementById('phoneInput');
-  phoneInput.addEventListener('input', updateSendBtn);
+  phoneInput.addEventListener('input', updateBtns);
 
-  function updateSendBtn() {
-    const phone = phoneInput.value.replace(/\s/g, '');
-    document.getElementById('sendBtn').disabled = !selectedMood || phone.length < 6;
+  function updateBtns() {
+    const hasPhone = phoneInput.value.replace(/\s/g, '').length >= 6;
+    document.getElementById('downloadBtn').disabled = !selectedMood;
+    document.getElementById('smsBtn').disabled = !selectedMood || !hasPhone;
   }
 
-  function sendMood() {
+  function downloadImage() {
+    if (!selectedMood) return;
+    const link = document.createElement('a');
+    link.href = moodImages[selectedMood];
+    link.download = `tommaso-${selectedMood}.webp`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Update steps
+    document.getElementById('step1').className = 'step done';
+    document.getElementById('step2').className = 'step active';
+    document.getElementById('successMsg').classList.add('show');
+  }
+
+  function openSms() {
     const phone = phoneInput.value.replace(/\s/g, '');
     if (!selectedMood || phone.length < 6) return;
 
-    const msg = moodMessages[selectedMood];
-    // Use sms: URI for mobile
+    const msg = "Voici mon mood Tommaso du jour ! (check l'image jointe)";
     const separator = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
     window.location.href = `sms:${phone}${separator}body=${encodeURIComponent(msg)}`;
+
+    // Update steps
+    document.getElementById('step2').className = 'step done';
+    document.getElementById('step3').className = 'step active';
   }
 
-  // Allow Enter key to send
   phoneInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !document.getElementById('sendBtn').disabled) {
-      sendMood();
+    if (e.key === 'Enter' && !document.getElementById('smsBtn').disabled) {
+      openSms();
     }
   });
 </script>
